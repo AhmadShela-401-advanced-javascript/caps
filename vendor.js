@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 'use strict';
 /**
  * faler is a Nodejs library that used to provice phony data
@@ -21,7 +22,6 @@ function deliveredDriver(payload) {
  * and recole it self over and over again to simulate the real CAPS
  */
 function createOrder() {
-    // createOrder(sendEmail, 5000);
     let newOrder = {
         storeName: storName,
         orderId: faker.random.uuid(),
