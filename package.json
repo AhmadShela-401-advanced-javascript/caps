@@ -4,7 +4,9 @@
   "description": "",
   "main": "events.js",
   "scripts": {
-    "test": "jest --verbose --coverage"
+    "test": "jest --verbose --coverage",
+    "lint": "eslint '**/*.js'",
+    "lint:js:fix": "eslint './**/*.js' --ignore-pattern node_modules/ --fix"
   },
   "repository": {
     "type": "git",
@@ -19,8 +21,10 @@
   "homepage": "https://github.com/AhmadShela-401-advanced-javascript/caps#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
-    "eslint": "^7.10.0",
     "faker": "^5.1.0",
     "jest": "^26.4.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.10.0"
   }
 }
