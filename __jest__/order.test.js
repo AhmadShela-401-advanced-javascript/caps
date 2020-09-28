@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 jest.useFakeTimers();
 const events = require('../events');
 require('../caps');
