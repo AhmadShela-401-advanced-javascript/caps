@@ -1,37 +1,49 @@
 /* eslint-disable no-undef */
 'use strict';
 
-const net = require('net');
+const io = require('socket.io')(3000);
+// Load all apps modules
+// require('./apps/slick.js')(io);
+const caps = io.of('/caps');
 
-const server = net.createServer();
+caps.on('connection',(socket)=>{
+    console.log('wellcome to the caps server',socket.id);
+    let currentRoom = '';
+    socket.on('join',(room) =>{
+        socket.leave(currentRoom);
+        socket.join(room);
+        currentRoom = room;
+        console.log({currentRoom});
 
-// // const PORT = process.env.PORT || 4000;
-
-const port = process.env.PORT || 4000;
-
-server.listen(port, ()=> console.log(`server is running on ${port}`));
-
-// defined the connetionPool that contains all the connection's sockets
-var connectionPool = {};
-
-server.on('connection',(socket)=>{
-
-const id = `Socket-${Math.random()}`;
-
-connectionPool[id] = socket;
-
-socket.on('data',payload=>{
-    let msg = JSON.parse(payload.toString())
-    bordCastMsg(msg);
-});
-function bordCastMsg(msg) {
-    let payload = JSON.stringify(msg);
-    for (let id in connectionPool) {
-        connectionPool[id].write(payload);
+    });
+    // pickup, in-transit, delivered
+    
+    socket.on('pickup',payload =>{
+        // console.log('pickup payload is :',payload);
+        caps.emit('pickup',payload)
+        broadCast('pickup',payload);
+    });
+    socket.on('in-transit',payload =>{
+        // console.log('in-transit payload is :',payload);
+        caps.emit('in-transit',payload)
+        broadCast('in-transit',payload);
+    });
+    socket.on('delivered',payload =>{
+        // console.log('delivered payload is :',payload);
+        caps.emit('delivered',payload)
+        broadCast('delivered',payload);
+    });
+    function broadCast(event,payload) {
+        console.log({event ,payload});
     }
-}
-socket.on('close',()=>{
-
-})
+    // socket.on('data',payload =>{
+    //     console.log('this is the payload ',payload);
+    //     let msg = JSON.stringify(payload);
+    //     socket.write(msg)
+    // });
 
 });
+
+// io.on('connection', (socket)=> {
+//     console.log("Welcome to My Global Connection!")
+// });
