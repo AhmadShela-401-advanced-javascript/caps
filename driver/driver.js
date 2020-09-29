@@ -1,30 +1,21 @@
 /* eslint-disable no-undef */
 'use strict';
 
-const net = require('net');
+const io = require('socket.io-client');
 
-const host = process.env.HOST || 'localhost';
-const port = process.env.PORT || 4000;
+const driver = io.connect('http://localhost:3000/caps');
 
-const client = new net.Socket();
-
-client.connect(port,host,()=>{
-    console.log('connecting..');
-});
-
-client.on('data',payload =>{
-    let msg = JSON.parse(payload.toString());
-    // console.log('payload >>>>>>>>> : ',msg);
-    if(msg.event == 'pickup'){
-        setTimeout(()=>{
-            // myEvent.emit('in-transit',payload)
-            let event = JSON.stringify({event: `in-transit`,payload : msg.payload });
-            console.log(`Driver Pickup ${msg.payload.orderId}`)
-            client.write(event)
-        },1000);
-        setTimeout(()=>{
-            let event = JSON.stringify({event: `delivered`,payload : msg.payload });
-            client.write(event)
-        },3000);
-    }
-});
+driver.on('pickup', payload => {
+    setTimeout(
+        () => {
+            console.log(`driver picked up the package`);
+            driver.emit('in-transit', payload);
+        }
+        , 1500);
+    setTimeout(
+        () => {
+            console.log(`driver delivered up the package`);
+            driver.emit('delivered', payload);
+        }
+        , 3000)
+})
