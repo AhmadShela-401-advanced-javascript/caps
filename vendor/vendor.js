@@ -1,38 +1,40 @@
 /* eslint-disable no-undef */
 'use strict';
 
-const net = require('net');
+const io = require('socket.io-client');
 const faker = require('faker');
-require('dotenv').config();
-const host = process.env.HOST || 'localhost';
-const port = process.env.PORT || 4000;
-const storName = process.env.STORE_NAME;
 
-const client = new net.Socket();
+const storeId = 'Ahmad';
 
-client.connect(port,host,()=>{
-    console.log('connecting..');
-});
+const vendor = io.connect('http://localhost:3000/caps');
 
-client.on('data',payload=>{
-    let msg = JSON.parse(payload.toString());
-    // console.log('**********',msg);
-    if(msg.event == 'delivered'){
-        console.log(`thank you for delivering the package ${msg.payload.orderId}`);
-    }
-})
+// vendor.on('connect',()=>{
 
+    vendor.emit('join', storeId);
+
+    // slick.on('joined', (joinChannel)=> {
+    //     console.log("on Joined!!! joinChannel:  ",joinChannel)
+    //     storeId = joinChannel;
+    // });
+    // vendor.emit('pickup','hello this is just a test')
+
+    vendor.on('delivered',payload =>{
+        console.log('Thank you ',payload);
+    });
+
+// });
 
 function createOrder() {
     let newOrder = {
-        storeName: storName,
+        storeName: storeId,
         orderId: faker.random.uuid(),
         customerName: faker.name.findName(),
         address: faker.address.streetAddress()
     }
     console.log('*******************New Order*************************');
     setTimeout(createOrder, 5000);
-    let event = JSON.stringify({event: `pickup`,payload : newOrder });
-    client.write(event);
+    // let event = JSON.stringify({event: `pickup`,payload : newOrder });
+    // client.write(event);
+    vendor.emit('pickup',newOrder)
 }
 setTimeout(createOrder, 5000);
