@@ -19,7 +19,7 @@ const vendor = io.connect('http://localhost:3000/caps');
     // vendor.emit('pickup','hello this is just a test')
 
     vendor.on('delivered',payload =>{
-        console.log('Thank you ',payload);
+        console.log('Thank you ',payload.orderId);
     });
 
 // });
