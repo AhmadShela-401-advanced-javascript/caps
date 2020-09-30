@@ -9,7 +9,8 @@ const port = process.env.PORT || 4000;
 const client = new net.Socket();
 
 client.connect(port,host,()=>{
-    console.log('connecting..');
+    console.log(`connecting..${port}`);
+    // console.log('connecting..');
 });
 
 client.on('data',payload =>{

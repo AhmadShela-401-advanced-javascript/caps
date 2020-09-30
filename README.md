@@ -36,3 +36,7 @@ i.e. `“EVENT {}”`
 * open the repo file using your terminal and type `npm init -y`
 * download the folowing libraries using `npm i `
 * start the project using `node ./cap.js`
+
+## UML :
+
+![UML](./assets/labWhitboard.png)

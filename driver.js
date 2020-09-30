@@ -7,7 +7,7 @@ const myEvent =  require('./events')
  */
 myEvent.on('pickup',pickup);
 
-function pickup() {
+function pickup(payload) {
     setTimeout(()=>{
         console.log(`Driver Pickup ${payload.orderId}`)
         myEvent.emit('in-transit',payload)
