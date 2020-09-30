@@ -11,7 +11,7 @@ const storName = process.env.STORE_NAME;
 const client = new net.Socket();
 
 client.connect(port,host,()=>{
-    console.log('connecting..');
+    console.log(`connecting..${port}`);
 });
 
 client.on('data',payload=>{
