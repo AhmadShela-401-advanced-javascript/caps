@@ -35,6 +35,13 @@ caps.on('connection',(socket)=>{
     });
     function broadCast(event,payload) {
         console.log({event ,payload});
+        console.log(`EVENT { event: ${event},
+        time: ${new Date().toISOString()},
+        payload: { store: ${payload.storeName},
+        orderID: ${payload.orderId},
+        customer: ${payload.customerName},
+        address: ${payload.address} }
+    }`);
     }
     // socket.on('data',payload =>{
     //     console.log('this is the payload ',payload);
